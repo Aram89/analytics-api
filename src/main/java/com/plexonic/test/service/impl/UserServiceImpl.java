@@ -59,15 +59,15 @@ public class UserServiceImpl implements UserService {
         Date firstDayEnd = convertDateTime(date, false);
         Date lastDayStart = addDays(type, firstDayStart);
         Date lastDayEnd = addDays(type, firstDayEnd);
+        // Get the number of users that are installed at first day.
         int numberOfInstalledUsers = userRepository.getNumberOfInstalledUsers(firstDayStart, firstDayEnd);
+        // Get the number of users that were installed at first day and are active at last day (the day after given period).
         int retention = userRepository.getRetention(firstDayStart, firstDayEnd, lastDayStart, lastDayEnd);
         if (numberOfInstalledUsers == 0) {
             return 0d;
         }
         double retentionRate = (double)retention/(double)numberOfInstalledUsers;
         return retentionRate*100;
-
-
     }
 
     /**
@@ -84,7 +84,6 @@ public class UserServiceImpl implements UserService {
         c.add(Calendar.DATE, type.getValue());
         return c.getTime();
     }
-
 
     /**
      * This method is used for converting Date in dd/mm/yyyy to datetime in yyyy/mm/yyyy hh:mm:ss
