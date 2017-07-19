@@ -29,15 +29,23 @@ public class UserController {
     }
 
     /**
+     * Endpoint for getting daily active users.
      *
-     * @param dates
-     * @return
+     * @param dates array of dates in dd//mm/yyyy format.
+     * @return date and coreeponding dau in json format.
      */
     @RequestMapping(value = "dau", method = RequestMethod.GET)
     public List<DAU> getDAU(@RequestParam("dates") @DateTimeFormat(pattern = "dd/MM/yyyy") Date[] dates) {
         return userService.calculateDAUs(dates);
     }
 
+    /**
+     * Endpoint for getting user retention.
+     *
+     * @param type retention type. Accepted values are DAY1,DAY7,DAY40.
+     * @param date date for whihc retention must be calculated (dd/mm/yyyy format).
+     * @return retention rate for given day and type.
+     */
     @RequestMapping(value = "retention", method = RequestMethod.GET)
     public Double getRetention(@RequestParam("type") RetentionType type, @RequestParam("date") @DateTimeFormat(pattern = "dd/MM/yyyy") Date date) {
         return userService.calculateRetention(type, date);
